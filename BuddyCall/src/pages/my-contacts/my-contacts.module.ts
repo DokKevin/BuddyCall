@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { MyContactsPage } from './my-contacts';
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
 
 @NgModule({
   declarations: [

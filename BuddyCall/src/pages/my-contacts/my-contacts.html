@@ -1,5 +1,7 @@
 <ion-content padding>
-    <p>
-        Just to show I've naved
-    </p>
+    <ion-list>
+        <p ion-item *ngFor="let hero of heroes">
+            {{ hero }}
+        </p>  
+    </ion-list>
 </ion-content>
