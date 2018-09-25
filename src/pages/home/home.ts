@@ -11,26 +11,19 @@ import { Platform } from 'ionic-angular';
 })
 export class HomePage {
 
-    public allContacts: any
+  public allContacts: any
 
   constructor(public navCtrl: NavController, private contacts: Contacts, public platform: Platform) {
-
+      this.platform.ready().then(() =>{
+          this.contacts.find(['displayName', 'name', 'phoneNumbers', 'emails'], {filter: "", multiple: true})
+          .then(data => {
+              this.allContacts = data
+          });
+      });
   }
 
   navToGetContacts(){
     // TODO: This lets me hit back button to gather contacts again. Do I want this?
-    this.platform.ready().then(() =>{
-        // TODO: Asks me if I will allow it to access my contacts and then I have to push button again. 
-        this.contacts.find(['displayName', 'name', 'phoneNumbers', 'emails'], {filter: "", multiple: true})
-        .then(data => {
-            this.allContacts = data
-        });
-    });
-
-    
-
-    // this.allContacts = ['Test', 'From', 'Home'];
-
     this.navCtrl.push(MyContactsPage, {contacts: this.allContacts});
   }
 
