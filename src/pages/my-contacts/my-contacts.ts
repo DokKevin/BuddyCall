@@ -13,7 +13,7 @@ export class MyContactsPage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         this.allContacts = navParams.get('contacts');
-  }
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyContactsPage');

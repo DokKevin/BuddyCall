@@ -12,10 +12,11 @@ import { Platform } from 'ionic-angular';
 export class HomePage {
 
   public allContacts: any
+  public mostContacts: any
 
   constructor(public navCtrl: NavController, private contacts: Contacts, public platform: Platform) {
       this.platform.ready().then(() =>{
-          this.contacts.find(['displayName', 'name', 'phoneNumbers', 'emails'], {filter: "", multiple: true})
+          this.contacts.find(['displayName', 'name', 'phoneNumbers', 'emails', 'organizations'], {filter: "", multiple: true})
           .then(data => {
               this.allContacts = data
           });
