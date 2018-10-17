@@ -1,8 +1,7 @@
 <ion-content padding>
     <ion-list>
-        <p ion-item *ngFor="let contact of allContacts">
+        <p ion-item *ngFor="let contact of filteredContacts">
             {{ contact.displayName }}
-            <!-- I don't know how to do nested ngFors, I may need this later -->
         </p>
     </ion-list>
 </ion-content>
