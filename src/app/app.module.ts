@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { MyContactsPage } from '../pages/my-contacts/my-contacts';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/cont
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
