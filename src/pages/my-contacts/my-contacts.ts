@@ -12,6 +12,8 @@ import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/cont
 export class MyContactsPage {
 
     public allContacts: any
+    public retrievedContacts: Contact[] = []
+    public alphContacts: Contact[] = []
     private contactStorage: Storage
     // Temporary
     public length: any
@@ -25,26 +27,50 @@ export class MyContactsPage {
     }
 
     updateContacts(){
-        // Temporary, clear it for now so I know it's empty.
-        // this.contactStorage.clear();
-
-        // Alphabetize now so I don't have to store them alphabetically.
-        this.alphabetizeContacts();
-
-        // Test storage below here, usually want to alphebetize after getting from storage
-        // this.contactStorage.set(this.allContacts[0].displayName, JSON.stringify(this.allContacts[0]));
+        // TODO: Check if storing again will overwrite that data or will leave
+        // it alone
+        // The answer to the above will determine if I need to check for new
+        // contacts or if I can simply mass store every time.
+        for(let index in this.allContacts){
+            this.set(this.allContacts[index].displayName,this.allContacts[index]).then(() => {
+                console.log("Stored Contact " + index);
+            });
+        }
 
         this.contactStorage.length().then( storeLength => {
             this.length = storeLength;
         });
 
-        this.contactStorage.get(this.allContacts[0].displayName).then(gotContact => {
-            this.testContact = JSON.parse(gotContact)._objectInstance;
-        });
+        this.storage.forEach( (value, key, index) => {
+           this.retrievedContacts = [...this.retrievedContacts, value._objectInstance];
+        })
 
+        // Alphabetize now so I don't have to store them alphabetically.
+        this.alphabetizeContacts().then(sorted => {
+            this.alphContacts = sorted;
+        });
     }
 
-    alphabetizeContacts(){
+    // Storage Functions -> TODO: Look into moving into a storage object
+    public set(settingName,value){
+        return this.contactStorage.set(settingName,value);
+    }
+
+    public async get(settingName){
+        return await this.contactStorage.get(settingName);
+    }
+
+    public async remove(settingName){
+        return await this.contactStorage.remove(settingName);
+    }
+
+    public clear() {
+        this.contactStorage.clear().then(() => {
+            console.log('all keys cleared');
+        });
+    }
+
+    public async alphabetizeContacts(){
         let sortedIndexes: number[]
         let sortedContacts: any
 
@@ -85,7 +111,7 @@ export class MyContactsPage {
         }
 
         // Reassign sortedContacts to allContacts
-        this.allContacts = sortedContacts;
+        return await sortedContacts;
     }
 
   ionViewDidLoad() {
