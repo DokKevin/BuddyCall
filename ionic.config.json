@@ -1,5 +1,7 @@
 {
   "name": "BuddyCall",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
