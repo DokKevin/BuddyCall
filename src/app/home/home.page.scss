@@ -1,9 +1,30 @@
-.row {
+
+.grid {
+    width: 100vw;
+}
+
+.col {
+    height: 98vh;
+    padding: 0px 0px 0px 0px;
+}
+
+.fullSize {
+    display: block;
+    height: 50vw;
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    align-items: center;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid red;
+}
+
+.buffer {
+    display: block;
+    height: 25vw;
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid black;
+}
+
+a {
+    text-align: center;
+    line-height: 50vw;
 }

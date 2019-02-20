@@ -1,7 +1,19 @@
-<ion-content padding>
+<ion-grid class="grid">
+    <ion-row class="row" align-items-center>
+        <ion-col id="leftCol" class="col">
+            <div class="buffer"></div>
+            <a class="fullSize">Test Button 1</a>
+        </ion-col>
+        <ion-col id="rightCol" class="col">
+            <a class="fullSize">Test Button 2</a>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<!-- <ion-content padding>
     <ion-row center class="row">
         <ion-col text-center>
             <ion-button shape="round" size="large" color="primary" (click)="navToManageContacts()">Manage Contacts</ion-button>
         </ion-col>
     </ion-row>
-</ion-content>
+</ion-content> -->
