@@ -1,19 +1,14 @@
 <ion-grid class="grid">
     <ion-row class="row" align-items-center>
         <ion-col id="leftCol" class="col">
-            <div class="buffer"></div>
-            <a class="fullSize">Test Button 1</a>
+            <a class="fullSize top" (click)="navToManageContacts()">Manage Contacts</a>
+            <a class="fullSize middle">Settings</a>
+            <div class="buffer bottom"></div>
         </ion-col>
         <ion-col id="rightCol" class="col">
-            <a class="fullSize">Test Button 2</a>
+            <div class="buffer top"></div>
+            <a class="fullSize middle">Calendar</a>
+            <a class="fullSize bottom">BuddyCall</a>
         </ion-col>
     </ion-row>
 </ion-grid>
-
-<!-- <ion-content padding>
-    <ion-row center class="row">
-        <ion-col text-center>
-            <ion-button shape="round" size="large" color="primary" (click)="navToManageContacts()">Manage Contacts</ion-button>
-        </ion-col>
-    </ion-row>
-</ion-content> -->
