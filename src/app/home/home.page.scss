@@ -57,5 +57,13 @@ a {
 }
 
 a:active {
-    color: #ED93A5;
+    animation-name: click;
+    animation-duration: .35s;
+}
+
+@keyframes click {
+    to{
+        color: #ED93A5;
+        font-size: 1.25em;
+    }
 }
