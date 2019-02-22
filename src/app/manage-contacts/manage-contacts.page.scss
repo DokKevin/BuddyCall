@@ -1,0 +1,37 @@
+$secondaryColor: #9DB1FF;
+
+.contact {
+    width: 100%;
+    border: 2px solid $secondaryColor;
+    color: $secondaryColor;
+    text-align: center;
+    border-radius: 15px;
+    margin-top: 2.5vh;
+    margin-bottom: 2.5vh;
+    padding: 3vh;
+    font-size: 1.5em;
+}
+
+.buffer {
+    height: 2vh;
+}
+
+.buffer2 {
+    display: inline-block;
+    width: 2vw;
+}
+
+.unavailable {
+    color: grey;
+}
+
+#noContacts {
+    width: 100vw;
+    position: absolute;
+    top: 50vh;
+    left: 0px;
+    transform: translateY(-50%);
+    color: $secondaryColor;
+    text-align: center;
+    font-size: 2em;
+}

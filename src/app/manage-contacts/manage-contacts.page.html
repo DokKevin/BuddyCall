@@ -1,8 +1,22 @@
 <ion-content padding>
-    <a href="">BACK</a>
-    <ion-list>
-        <ion-item *ngFor="let contact of alphContacts">
-            {{ contact.displayName }}
-        </ion-item>
-    </ion-list>
+    <div class="contact" *ngFor="let contact of alphContacts">
+        {{ contact.displayName }}
+        <div class="buffer"></div>
+        <ion-icon name="trash" size="large" (click)="clickDelete(contact)"></ion-icon>
+        <span class="buffer2"></span>
+        <ion-icon name="clipboard" size="large" class="unavailable"></ion-icon>
+    </div>
+    <div id="noContacts" *ngIf="length <= 0">No contacts saved yet</div>
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+<ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab-button color="secondary" href="">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </ion-fab-button>
+</ion-fab>

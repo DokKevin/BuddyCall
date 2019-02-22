@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Contacts, Contact } from '@ionic-native/contacts/ngx';
 import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -15,7 +16,7 @@ export class ManageContactsPage implements OnInit {
     private contactStorage: Storage;
     public length: any
 
-  constructor(private contacts: Contacts, private storage: Storage) {
+  constructor(private contacts: Contacts, private storage: Storage, public navCtrl: NavController) {
       this.contactStorage = storage;
   }
 
@@ -26,6 +27,10 @@ export class ManageContactsPage implements OnInit {
           this.allContacts = data;
 
           this.filterContacts().then(() => {
+              // Attention: Don't want to grab and store all contacts like I do
+              // now, want to initially display only stored contacts then only
+              // grab contacts from phone when adding.
+
               this.updateContacts();
           });
       });
@@ -43,21 +48,22 @@ export class ManageContactsPage implements OnInit {
 
   updateContacts(){
       // TODO: Check if storing again will overwrite that data or will leave
-      // it alone
-      // The answer to the above will determine if I need to check for new
-      // contacts or if I can simply mass store every time.
+      // it alone - will overwrite if save is exactly the same as before.
       for(let index in this.allContacts){
           this.set(this.allContacts[index].displayName,this.allContacts[index]).then(() => {
-              console.log("Stored Contact " + index);
+              console.log("Stored Contact " + index + ": " + this.allContacts[index].displayName);
           });
       }
 
       this.contactStorage.length().then( storeLength => {
+          console.log("storeLength: " + storeLength);
           this.length = storeLength;
+          console.log("length: " + this.length);
       });
 
       this.storage.forEach( (value, key, index) => {
          this.retrievedContacts = [...this.retrievedContacts, value._objectInstance];
+         console.log("Index from Storage: " + index);
       })
 
       // Alphabetize now so I don't have to store them alphabetically.
@@ -84,6 +90,16 @@ export class ManageContactsPage implements OnInit {
       this.contactStorage.clear().then(() => {
           console.log('all keys cleared');
       });
+  }
+
+  public clickDelete(toDelete : Contact){
+      this.alphContacts = this.alphContacts.filter(item => item != toDelete);
+
+      this.remove(toDelete.displayName);
+
+      // TEMP
+      this.length = this.length - 1;
+      console.log(this.length);
   }
 
   public async alphabetizeContacts(){
@@ -130,4 +146,7 @@ export class ManageContactsPage implements OnInit {
       return await sortedContacts;
   }
 
+  navHome(){
+      this.navCtrl.navigateBack('/home');
+  }
 }
