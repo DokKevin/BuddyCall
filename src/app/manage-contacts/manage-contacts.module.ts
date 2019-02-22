@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ManageContactsPage } from './manage-contacts.page';
+import { ModalcompComponentModule } from '../modalcomp/modalcomp.component.module';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ModalcompComponentModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ManageContactsPage]
