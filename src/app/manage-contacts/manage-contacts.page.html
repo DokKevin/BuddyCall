@@ -2,7 +2,7 @@
     <div class="contact" *ngFor="let contact of alphContacts">
         {{ contact.displayName }}
         <div class="buffer"></div>
-        <ion-icon name="trash" size="large" (click)="clickDelete(contact)"></ion-icon>
+        <ion-icon class="delete" name="trash" size="large" (click)="openModal(contact)"></ion-icon>
         <span class="buffer2"></span>
         <ion-icon name="clipboard" size="large" class="unavailable"></ion-icon>
     </div>

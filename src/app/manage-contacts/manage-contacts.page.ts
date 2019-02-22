@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Contacts, Contact } from '@ionic-native/contacts/ngx';
 import { Storage } from '@ionic/storage';
-import { NavController } from '@ionic/angular';
+import { NavController , ModalController } from '@ionic/angular';
+
+import { ModalcompComponent } from '../modalcomp/modalcomp.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -16,7 +18,8 @@ export class ManageContactsPage implements OnInit {
     private contactStorage: Storage;
     public length: any
 
-  constructor(private contacts: Contacts, private storage: Storage, public navCtrl: NavController) {
+  constructor(private contacts: Contacts, private storage: Storage,
+              public navCtrl: NavController, public modalController: ModalController) {
       this.contactStorage = storage;
   }
 
@@ -90,6 +93,29 @@ export class ManageContactsPage implements OnInit {
       this.contactStorage.clear().then(() => {
           console.log('all keys cleared');
       });
+  }
+
+  async openModal(toDelete : Contact) {
+      console.log("FirstName: " + toDelete.firstName);
+    const modal = await this.modalController.create({
+      component: ModalcompComponent,
+      componentProps: { value: toDelete.firstName },
+      showBackdrop: true,
+      cssClass: 'modal-popup'
+    });
+    await modal.present();
+    let shouldDelete = await modal.onDidDismiss();
+
+    console.log(shouldDelete);
+    console.log("ShouldDelete[0]: " + shouldDelete.data.result);
+
+    if(shouldDelete.data.result == 1){
+        console.log("Should Delete 1")
+        this.clickDelete(toDelete);
+    } else {
+        console.log("Should Delete 0")
+        // Do Nothing
+    }
   }
 
   public clickDelete(toDelete : Contact){

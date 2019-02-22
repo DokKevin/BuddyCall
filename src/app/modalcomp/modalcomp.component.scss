@@ -1,0 +1,48 @@
+* {
+    text-align: center;
+    color: #9DB1FF;
+    font-size: 1.5em;
+}
+
+#warning {
+    margin-top: 5vh;
+    margin-left: 5vw;
+    margin-right: 5vh;
+}
+
+#buttonWrapper span{
+    display: inline-block;
+    width: 50%;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 1vh;
+}
+
+#buttonWrapper span:active{
+    animation-name: click;
+    animation-duration: .35s;
+}
+
+@keyframes click {
+    from{
+        background-color: white;
+    }
+    50%{
+        background-color: #9DB1FF;
+    }
+    to{
+        background-color: white;
+    }
+}
+
+#cancel {
+    border-top: 2px solid #9DB1FF;
+    border-right: 1px solid #9DB1FF;
+    color: grey;
+}
+
+#delete {
+    border-top: 2px solid #9DB1FF;
+    border-left: 1px solid #9DB1FF;
+    color: red;
+}
