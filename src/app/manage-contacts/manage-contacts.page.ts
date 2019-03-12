@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { NavController , ModalController } from '@ionic/angular';
 
 import { ModalcompComponent } from '../modalcomp/modalcomp.component';
+import { AddContactComponent } from '../addcontact/addcontact.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -24,19 +25,45 @@ export class ManageContactsPage implements OnInit {
   }
 
   ngOnInit() {
+      this.updateContacts();
+  }
+
+  public getContactsFromPhone(){
       // Grab Contacts From phone
       this.contacts.find(['displayName', 'name', 'phoneNumbers'], {filter: "", multiple: true})
       .then(data => {
           this.allContacts = data;
 
-          this.filterContacts().then(() => {
-              // Attention: Don't want to grab and store all contacts like I do
-              // now, want to initially display only stored contacts then only
-              // grab contacts from phone when adding.
-
-              this.updateContacts();
+          this.filterContacts().then( () => {
+              this.retrievedContacts = this.allContacts;
+              this.alphabetizeContacts().then(sorted => {
+                  // It's not happening in the right oreder, this is happening too soon
+                  this.allContacts = sorted;
+                  console.log("After Sorted");
+                  console.log(this.allContacts);
+                  this.displayAddModal();
+              });
           });
       });
+  }
+
+  public async displayAddModal(){
+      const modal = await this.modalController.create({
+          component: AddContactComponent,
+          componentProps: { value: this.allContacts },
+          showBackdrop: true,
+          cssClass: 'addcontact-popup'
+      });
+      await modal.present();
+      let toAdd = await modal.onDidDismiss();
+
+      for(let person of toAdd.data.result){
+          this.set(person.displayName, person).then(() => {
+              console.log("Stored Contact: " + person.displayName);
+          });
+      }
+
+      this.updateContacts();
   }
 
   public async filterContacts(){
@@ -44,19 +71,30 @@ export class ManageContactsPage implements OnInit {
       // contacts with no display name are organizations and you don't want
       // to catch up with them anyway.
       this.allContacts = this.allContacts.filter(contact => contact.displayName != null);
+
       // Filter out contacts starting with #, assuming these are for your phone
       // service.
       this.allContacts = this.allContacts.filter(contact => contact.displayName.charAt(0) != '#');
+
+      // TODO: Filter based on contacts already stored
+      this.contactStorage.forEach( (value, key, index) => {
+          this.allContacts = this.allContacts.filter(contact => contact.displayName != value._objectInstance.displayName);
+          console.log("Inside Filtered");
+          console.log(this.allContacts);
+      });
+
+      console.log("Filtered");
+      console.log(this.allContacts);
   }
 
   updateContacts(){
-      // TODO: Check if storing again will overwrite that data or will leave
-      // it alone - will overwrite if save is exactly the same as before.
-      for(let index in this.allContacts){
-          this.set(this.allContacts[index].displayName,this.allContacts[index]).then(() => {
-              console.log("Stored Contact " + index + ": " + this.allContacts[index].displayName);
-          });
-      }
+      // for(let index in this.allContacts){
+      //     this.set(this.allContacts[index].displayName,this.allContacts[index]).then(() => {
+      //         console.log("Stored Contact " + index + ": " + this.allContacts[index].displayName);
+      //     });
+      // }
+
+      this.retrievedContacts = [];
 
       this.contactStorage.length().then( storeLength => {
           console.log("storeLength: " + storeLength);
@@ -64,15 +102,16 @@ export class ManageContactsPage implements OnInit {
           console.log("length: " + this.length);
       });
 
-      this.storage.forEach( (value, key, index) => {
+      this.contactStorage.forEach( (value, key, index) => {
          this.retrievedContacts = [...this.retrievedContacts, value._objectInstance];
          console.log("Index from Storage: " + index);
-      })
+     }).then( () => {
+         // Alphabetize now so I don't have to store them alphabetically.
+         this.alphabetizeContacts().then(sorted => {
+             this.alphContacts = sorted;
+         });
+     });
 
-      // Alphabetize now so I don't have to store them alphabetically.
-      this.alphabetizeContacts().then(sorted => {
-          this.alphContacts = sorted;
-      });
   }
 
   // Storage Functions
@@ -121,11 +160,9 @@ export class ManageContactsPage implements OnInit {
   public clickDelete(toDelete : Contact){
       this.alphContacts = this.alphContacts.filter(item => item != toDelete);
 
-      this.remove(toDelete.displayName);
-
-      // TEMP
-      this.length = this.length - 1;
-      console.log(this.length);
+      this.remove(toDelete.displayName).then(() => {
+          this.updateContacts();
+      });
   }
 
   public async alphabetizeContacts(){
@@ -133,18 +170,18 @@ export class ManageContactsPage implements OnInit {
       let sortedContacts: any
 
       // Sort by displayName of contact and save indexes to sortedIndexes
-      for(let contactIndex in this.allContacts){
+      for(let contactIndex in this.retrievedContacts){
           if(parseInt(contactIndex) === 0){
               sortedIndexes = [parseInt(contactIndex)];
           } else {
               for(let sortIndex in sortedIndexes){
-                  if(parseInt(sortIndex) === 0 && this.allContacts[parseInt(contactIndex)].displayName.localeCompare(this.allContacts[sortedIndexes[parseInt(sortIndex)]].displayName) < 0){
+                  if(parseInt(sortIndex) === 0 && this.retrievedContacts[parseInt(contactIndex)].displayName.localeCompare(this.retrievedContacts[sortedIndexes[parseInt(sortIndex)]].displayName) < 0){
                       sortedIndexes = [parseInt(contactIndex), ...sortedIndexes];
                       break;
-                  } else if(parseInt(sortIndex) === sortedIndexes.length - 1 && this.allContacts[parseInt(contactIndex)].displayName.localeCompare(this.allContacts[sortedIndexes[parseInt(sortIndex)]].displayName) > 0){
+                  } else if(parseInt(sortIndex) === sortedIndexes.length - 1 && this.retrievedContacts[parseInt(contactIndex)].displayName.localeCompare(this.retrievedContacts[sortedIndexes[parseInt(sortIndex)]].displayName) > 0){
                       sortedIndexes = [...sortedIndexes, parseInt(contactIndex)];
                       break;
-                  } else if(this.allContacts[parseInt(contactIndex)].displayName.localeCompare(this.allContacts[sortedIndexes[parseInt(sortIndex)]].displayName) < 0){
+                  } else if(this.retrievedContacts[parseInt(contactIndex)].displayName.localeCompare(this.retrievedContacts[sortedIndexes[parseInt(sortIndex)]].displayName) < 0){
                       let arrayFront: any
                       let arrayBack: any
 
@@ -162,13 +199,12 @@ export class ManageContactsPage implements OnInit {
       // indexes in sortedIndexes.
       for(let sortIndex in sortedIndexes){
           if(parseInt(sortIndex) === 0){
-              sortedContacts = [this.allContacts[sortedIndexes[parseInt(sortIndex)]]];
+              sortedContacts = [this.retrievedContacts[sortedIndexes[parseInt(sortIndex)]]];
           } else {
-              sortedContacts = [...sortedContacts, this.allContacts[sortedIndexes[parseInt(sortIndex)]]];
+              sortedContacts = [...sortedContacts, this.retrievedContacts[sortedIndexes[parseInt(sortIndex)]]];
           }
       }
 
-      // Reassign sortedContacts to allContacts
       return await sortedContacts;
   }
 

@@ -39,3 +39,12 @@ $secondaryColor: #9DB1FF;
 .delete {
     color: #FF8080;
 }
+
+.buttonbuffer {
+    text-align: center;
+    color: $secondaryColor;
+    font-weight: bold;
+    font-size: 2em;
+    height: 9vh;
+    line-height: 9vh;
+}

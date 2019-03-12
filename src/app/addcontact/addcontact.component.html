@@ -1,0 +1,14 @@
+<h1>
+    Add Contacts
+</h1>
+<div id="nameWrapper">
+    <div *ngFor="let name of names">
+        <ion-checkbox class="radioLabel" slot="start" value="name.displayName" [(ngModel)]="name.isChecked"></ion-checkbox>
+        &nbsp;
+        <ion-label class="radioButt">{{ name.thisPerson.displayName }}</ion-label>
+    </div>
+</div>
+<div id="buttonWrapper">
+    <span id="cancel" (click)="clickCancel()">Cancel</span>
+    <span id="delete" (click)="clickAdd()">Add</span>
+</div>

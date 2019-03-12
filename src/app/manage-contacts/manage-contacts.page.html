@@ -1,4 +1,5 @@
 <ion-content padding>
+    <div class="buttonbuffer" *ngIf="length > 0">Your Buddies</div>
     <div class="contact" *ngFor="let contact of alphContacts">
         {{ contact.displayName }}
         <div class="buffer"></div>
@@ -6,12 +7,13 @@
         <span class="buffer2"></span>
         <ion-icon name="clipboard" size="large" class="unavailable"></ion-icon>
     </div>
-    <div id="noContacts" *ngIf="length <= 0">No contacts saved yet</div>
+    <div id="noContacts" *ngIf="length <= 0">No buddies saved yet</div>
+    <div class="buttonbuffer" *ngIf="length > 0"></div>
 </ion-content>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="secondary">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add" (click)="getContactsFromPhone()"></ion-icon>
     </ion-fab-button>
 </ion-fab>
 

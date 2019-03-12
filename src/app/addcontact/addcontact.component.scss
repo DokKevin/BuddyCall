@@ -1,0 +1,59 @@
+* {
+    text-align: center;
+    color: #9DB1FF;
+}
+
+#buttonWrapper span{
+    display: inline-block;
+    width: 50%;
+    font-size: 1.25em;
+    font-weight: bold;
+    padding: 2vh;
+}
+
+#buttonWrapper span:active{
+    animation-name: click;
+    animation-duration: .35s;
+}
+
+@keyframes click {
+    from{
+        background-color: white;
+    }
+    50%{
+        background-color: #9DB1FF;
+    }
+    to{
+        background-color: white;
+    }
+}
+
+#cancel {
+    border-top: 2px solid #9DB1FF;
+    border-right: 1px solid #9DB1FF;
+    color: red;
+}
+
+#delete {
+    border-top: 2px solid #9DB1FF;
+    border-left: 1px solid #9DB1FF;
+    color: #9DB1FF;
+}
+
+#nameWrapper {
+    height: 75vh;
+    width: 75vw;
+    max-height: 75vh;
+    max-width: 75vw;
+    overflow: auto;
+}
+
+#nameWrapper div{
+    display: block;
+    margin: 1vh;
+    font-size: 1.5em;
+}
+
+.radioLabel{
+    margin-left: 1vw;
+}
